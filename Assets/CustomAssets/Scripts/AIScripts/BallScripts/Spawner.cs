@@ -6,6 +6,9 @@ public class Spawner : MonoBehaviour
     public GameObject prefabToSpawn;
     public float spawnDelay = 10f;
     private float firstSpawnDelay = 5f;
+    public int maxNumBalls = 7;
+
+    private int numBalls = 0;
 
     void Start()
     {
@@ -18,11 +21,16 @@ public class Spawner : MonoBehaviour
         yield return new WaitForSeconds(firstSpawnDelay);
         SpawnPrefab();
 
-        // Spawn subsequent prefabs after 30 seconds
+        // Spawn subsequent prefabs after a delay
         while (true)
         {
             yield return new WaitForSeconds(spawnDelay);
-            SpawnPrefab();
+
+            // If the number of balls is less than the maximum limit, spawn a new ball
+            if (numBalls < maxNumBalls)
+            {
+                SpawnPrefab();
+            }
         }
     }
 
@@ -35,6 +43,15 @@ public class Spawner : MonoBehaviour
         GameObject newPrefab = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
         Rigidbody prefabRigidbody = newPrefab.GetComponent<Rigidbody>();
         prefabRigidbody.AddForce(direction, ForceMode.Impulse);
+
+        // Increment the number of balls
+        numBalls++;
+    }
+
+    // Method to decrement the number of balls
+    public void DecrementNumBalls()
+    {
+        numBalls--;
     }
 }
 

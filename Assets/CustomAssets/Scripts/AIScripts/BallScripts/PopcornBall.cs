@@ -16,6 +16,7 @@ public class PopcornBall : MonoBehaviour
     private Rigidbody rb;
     private int numBounces = 0; // The number of times the ball has bounced
     private int numSplitsLeft = 2; // The number of times the ball can still split
+    private int numSplitsMade = 0;
 
     private void Start()
     {
@@ -75,14 +76,32 @@ public class PopcornBall : MonoBehaviour
         duplicate1.GetComponent<PopcornBall>().numSplitsLeft = numSplitsLeft - 1;
         duplicate2.GetComponent<PopcornBall>().numSplitsLeft = numSplitsLeft - 1;
 
-        // Add a sudden burst of speed and bounce force
-        float currentSpeed = rb.velocity.magnitude;
-        rb.AddForce(rb.velocity.normalized * splitSpeedBoost, ForceMode.Impulse);
-        rb.AddForce(Vector3.up * splitBounceForce, ForceMode.Impulse);
+        // Get a reference to the spawner and decrement the number of balls
+        Spawner spawner = FindObjectOfType<Spawner>();
+        if (spawner != null)
+        {
+            spawner.DecrementNumBalls();
+        }
+
+        // Store the duplicates in variables
+        PopcornBall duplicate1Script = duplicate1.GetComponent<PopcornBall>();
+        PopcornBall duplicate2Script = duplicate2.GetComponent<PopcornBall>();
 
         // Destroy the current object
         Destroy(gameObject);
+
+        // Destroy the duplicates after 5 seconds
+        Destroy(duplicate1, 5f);
+        Destroy(duplicate2, 5f);
+
+        // If this was the final split, destroy both duplicates
+        if (numSplitsLeft == 0)
+        {
+            Destroy(duplicate1);
+            Destroy(duplicate2);
+        }
     }
+
 }
 
 
