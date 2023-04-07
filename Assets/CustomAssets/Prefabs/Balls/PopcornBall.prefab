@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2860141887982017184}
   m_LocalRotation: {x: 0.17211981, y: -0.0013722532, z: -0.26658294, w: 0.9483177}
   m_LocalPosition: {x: 186.02156, y: 14.772543, z: -24.540937}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -125,9 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f5fcaad386001144a36340dd3ad7c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceForce: 5
+  bounceForce: 50
   gravityScale: 0.17
-  speedIncrement: 2
+  speedIncrement: 10
   maxBounceForce: 50
   maxSpeed: 20
   numSplits: 2
