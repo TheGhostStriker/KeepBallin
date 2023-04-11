@@ -17,9 +17,22 @@ namespace SojaExiles
 			open = false;
 		}
 
-		void OnMouseOver()
+        public void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.F))
+            {
+				StartCoroutine(opening());
+            }
+
+			if(Input.GetKeyDown(KeyCode.G))
+            {
+				StartCoroutine(closing());
+            }
+        }
+
+        void OnMouseOver()
 		{
-			{
+			
 				if (Player)
 				{
 					float dist = Vector3.Distance(Player.position, transform.position);
@@ -47,7 +60,7 @@ namespace SojaExiles
 					}
 				}
 
-			}
+			
 
 		}
 
