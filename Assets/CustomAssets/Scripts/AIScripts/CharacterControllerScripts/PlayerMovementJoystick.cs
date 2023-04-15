@@ -35,6 +35,14 @@ public class PlayerMovementJoystick : MonoBehaviour
             // Transform the movement vector from local space to world space
             Vector3 worldMovement = transform.TransformDirection(movement.normalized * speed);
 
+            // Cast a ray in front of the player to check for obstacles
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, worldMovement, out hit, worldMovement.magnitude * Time.fixedDeltaTime))
+            {
+                // Stop the player from moving forward if there is an obstacle
+                worldMovement = hit.distance * hit.normal / Time.fixedDeltaTime;
+            }
+
             // Apply the movement to the Rigidbody
             _rigidbody.MovePosition(transform.position + worldMovement * Time.fixedDeltaTime);
 
@@ -83,6 +91,8 @@ public class PlayerMovementJoystick : MonoBehaviour
         }
     }
 }
+
+
 
 
 
