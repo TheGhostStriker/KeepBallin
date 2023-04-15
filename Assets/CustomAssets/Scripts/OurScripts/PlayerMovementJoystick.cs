@@ -1,0 +1,96 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+public class PlayerMovementJoystick : MonoBehaviour
+{
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private FixedJoystick _joystick;
+    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _turnSensitivity = 1f;
+    [SerializeField] private float _crouchSpeed = 0.5f;
+    [SerializeField] private float _crouchDuration = 1.0f;
+    [SerializeField] private float _uncrouchDuration = 1.0f;
+
+    private bool _isCrouching = false;
+    private float _crouchStartTime = 0.0f;
+
+    private void FixedUpdate()
+    {
+        Vector3 movement = new Vector3(_joystick.Horizontal * _turnSensitivity, 0f, _joystick.Vertical) * _moveSpeed;
+
+        if (movement.magnitude > 0.01f)
+        {
+            // Invert the movement vector if joystick is moving downwards
+            if (_joystick.Vertical < 0f)
+            {
+                Crouch();
+                return;
+            }
+
+            // If crouching, move slower
+            float speed = (_isCrouching) ? _crouchSpeed : _moveSpeed;
+
+            // Transform the movement vector from local space to world space
+            Vector3 worldMovement = transform.TransformDirection(movement.normalized * speed);
+
+            // Apply the movement to the Rigidbody
+            _rigidbody.MovePosition(transform.position + worldMovement * Time.fixedDeltaTime);
+
+            // Rotate the character to face the movement direction
+            transform.rotation = Quaternion.LookRotation(worldMovement.normalized, Vector3.up);
+        }
+        else
+        {
+            // If not moving, stop crouching
+            StopCrouch();
+        }
+    }
+
+    private void Crouch()
+    {
+        // Only crouch if not already crouching
+        if (!_isCrouching)
+        {
+            _isCrouching = true;
+            _crouchStartTime = Time.time;
+
+            // Reduce the height of the character's collider
+            BoxCollider collider = GetComponent<BoxCollider>();
+            collider.size = new Vector3(collider.size.x, collider.size.y / 2f, collider.size.z);
+
+            // Play crouch animation or do other crouch-related stuff
+        }
+    }
+
+    private void StopCrouch()
+    {
+        // Only uncrouch if currently crouching
+        if (_isCrouching)
+        {
+            // If crouch duration has elapsed, uncrouch
+            if (Time.time - _crouchStartTime >= _crouchDuration)
+            {
+                _isCrouching = false;
+
+                // Increase the height of the character's collider
+                BoxCollider collider = GetComponent<BoxCollider>();
+                collider.size = new Vector3(collider.size.x, collider.size.y * 2f, collider.size.z);
+
+                // Play uncrouch animation or do other uncrouch-related stuff
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

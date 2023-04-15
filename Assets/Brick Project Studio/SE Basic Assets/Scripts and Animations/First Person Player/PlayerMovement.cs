@@ -17,6 +17,8 @@ namespace SojaExiles
 
         bool isGrounded;
 
+        public Joystick joystick;
+
         // Update is called once per frame
         void Update()
         {
