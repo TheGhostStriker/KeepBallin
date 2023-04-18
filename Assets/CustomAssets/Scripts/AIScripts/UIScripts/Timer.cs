@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
 
     public Text timerText;
     public float startTime = 0f;
-
+    public Animator doorAnim;
     private float currentTime;
 
     void Start()
@@ -20,6 +20,12 @@ public class Timer : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         UpdateTimerText();
+
+        if (currentTime >= 15f)
+        {
+            //Animator animator = GetComponent<Animator>();
+            doorAnim.SetTrigger("OpenDoor");
+        }
     }
 
     void UpdateTimerText()

@@ -40,9 +40,9 @@ public class NormalBall : MonoBehaviour
         }
 
         // Destroy the ball if speed reaches 0
-        if (speed == 5f)
+        if (speed <= 5f)
         {
-            Invoke("DestroyBalls", 10f); ;
+            Invoke("DestroyBalls", 1f); ;
         }
     }
 
