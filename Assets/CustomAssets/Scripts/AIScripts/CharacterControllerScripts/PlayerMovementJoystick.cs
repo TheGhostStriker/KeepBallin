@@ -15,6 +15,8 @@ public class PlayerMovementJoystick : MonoBehaviour
 
     private bool _isCrouching = false;
     private float _crouchStartTime = 0.0f;
+    public AudioClip movementSound;
+
 
     private void FixedUpdate()
     {
@@ -22,6 +24,14 @@ public class PlayerMovementJoystick : MonoBehaviour
 
         if (movement.magnitude > 0.01f)
         {
+
+            if (!_isCrouching && _rigidbody.velocity.magnitude > 0f && !GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().clip = movementSound;
+                GetComponent<AudioSource>().Play();
+
+                Debug.Log("Playing movement sound");
+            }
             // Invert the movement vector if joystick is moving downwards
             if (_joystick.Vertical < 0f)
             {
