@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NormalBall : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class NormalBall : MonoBehaviour
     private Rigidbody rb;
     private bool isMaxSpeedReached = false;
 
+
+    
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,14 +43,16 @@ public class NormalBall : MonoBehaviour
         }
 
         // Destroy the ball if speed reaches 0
-        if (speed <= 5f)
+        if (speed <= 2f)
         {
-            Invoke("DestroyBalls", 1f); ;
+            Invoke("DestroyBalls", 1f); 
         }
     }
 
     void OnCollisionEnter(Collision other)
     {
+        
+
         // Reflect the ball's velocity when it collides with a surface
         Vector3 reflection = Vector3.Reflect(rb.velocity, other.contacts[0].normal);
 
@@ -72,11 +77,13 @@ public class NormalBall : MonoBehaviour
 
         // Bounce the ball in the direction opposite to the collision
         Vector3 bounceDirection = -other.contacts[0].normal;
-        rb.velocity = Vector3.Reflect(rb.velocity, bounceDirection);
+        rb.AddForce(bounceDirection * speed * 2f, ForceMode.Impulse);
 
         // Apply the new speed to the ball's velocity
         rb.velocity = rb.velocity.normalized * speed;
     }
+
+
 
     public void DestroyBalls()
     {

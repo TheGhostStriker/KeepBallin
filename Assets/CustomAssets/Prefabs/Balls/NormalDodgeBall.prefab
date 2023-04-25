@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5987359935948327430}
   m_Layer: 0
   m_Name: NormalDodgeBall
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,9 +125,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f10ffe86be97a48b392f654f6984b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
-  maxSpeed: 30
+  speed: 5
+  maxSpeed: 12
   minSpeed: 2
   speedIncrement: 0.1
   gravity: 1
   drag: 2
+  gameOverCanvas: {fileID: 5069128997998250151, guid: 7be6741d2e13a5c4a92515785a7207ac,
+    type: 3}
