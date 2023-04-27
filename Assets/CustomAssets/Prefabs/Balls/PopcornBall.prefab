@@ -129,7 +129,7 @@ MonoBehaviour:
   gravityScale: 0.17
   speedIncrement: 10
   maxBounceForce: 50
-  maxSpeed: 20
-  numSplits: 2
-  splitBounceForce: 20
-  splitSpeedBoost: 10
+  maxSpeed: 12
+  numSplits: 3
+  splitBounceForce: 200
+  splitSpeedBoost: 50

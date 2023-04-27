@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
     private float personalBest;
     private bool isGameOver = false;
 
+    public Animator doorAnim;
+
+    public AudioSource ohLook;
+    public AudioClip ohLooky;
+
+
     void Start()
     {
         startTime = Time.time;
@@ -47,6 +53,19 @@ public class GameManager : MonoBehaviour
             }
             personalBestText.text = "Personal Best: " + Mathf.Floor(personalBest).ToString() + "s";
         }
+
+        if (survivalTime >= 15f && ohLook != null)
+        {
+            
+            if(!ohLook.isPlaying)
+            {
+                ohLook.PlayOneShot(ohLooky);
+                Destroy(ohLook, 6f);
+            }
+            //Animator animator = GetComponent<Animator>();
+            doorAnim.SetTrigger("OpenDoor");
+
+        }
     }
 
     public void GameOver()
@@ -66,6 +85,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("HomeScreen");
     }
 }
+
 
 
 
