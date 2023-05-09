@@ -8,6 +8,7 @@ public class TriggerOnandOffLevels : MonoBehaviour
     public GameObject newLevel;
     public Animator doorAnim;
     public AudioSource congratsPlayer;
+    
 
 
     public void OnTriggerEnter(Collider other)

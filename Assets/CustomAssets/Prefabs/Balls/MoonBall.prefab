@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2036892171329744647}
   m_Layer: 0
   m_Name: MoonBall
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,9 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bounceForce: 5
-  gravityScale: 0.17
-  speedIncrement: 2
+  gravityScale: 0.27
+  speedIncrement: 5
   maxBounceForce: 40
-  maxSpeed: 8
+  maxSpeed: 50
   spawnTime: 5
   maxBalls: 5

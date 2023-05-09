@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public Text bestTimeText;
     public Text personalBestText;
     public GameObject gameOverCanvas;
+    public GameObject doorBlocker1;
 
     private float startTime;
     private float survivalTime;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     private bool isGameOver = false;
 
     public Animator doorAnim;
+    public Animator sciDoorAnim;
 
     public AudioSource ohLook;
     public AudioClip ohLooky;
@@ -54,7 +56,7 @@ public class GameManager : MonoBehaviour
             personalBestText.text = "Personal Best: " + Mathf.Floor(personalBest).ToString() + "s";
         }
 
-        if (survivalTime >= 15f && ohLook != null)
+        if (survivalTime >= 30f && ohLook != null)
         {
             
             if(!ohLook.isPlaying)
@@ -65,6 +67,12 @@ public class GameManager : MonoBehaviour
             //Animator animator = GetComponent<Animator>();
             doorAnim.SetTrigger("OpenDoor");
 
+        }
+
+        if(survivalTime >= 90f)
+        {
+            sciDoorAnim.SetTrigger("OpenSciDoor");
+            doorBlocker1.SetActive(false);
         }
     }
 
