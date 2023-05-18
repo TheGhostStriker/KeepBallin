@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public class PlayerMovementJoystick : MonoBehaviour
@@ -17,8 +18,41 @@ public class PlayerMovementJoystick : MonoBehaviour
     private float _crouchStartTime = 0.0f;
     public AudioClip movementSound;
 
+    [SerializeField] private float _movementSmoothing = 0.1f;
+    private Vector3 _originalJoystickMovement;
+    private Vector3 _smoothedJoystickMovement;
+
+    private const float _movementThreshold = 0.01f;
+
+    private bool _isSpeedBoostActive = false;
+    [SerializeField] private float _speedBoostMultiplier = 2.0f;
+    [SerializeField] private float _speedBoostDuration = 2.0f;
+    [SerializeField] private float _speedBoostCooldown = 5.0f;
+    private float _speedBoostEndTime = 0.0f;
+    private float _speedBoostCooldownEndTime = 0.0f;
+
+    [SerializeField] private Button _speedBoostButton;
+    [SerializeField] private Button _stopButton;
+
+    private bool _isPlayerStopped = false;
+    private bool _isMovementAllowed = true;
+
+    private void Start()
+    {
+        _originalJoystickMovement = Vector3.zero;
+        _speedBoostButton.onClick.AddListener(ActivateSpeedBoost);
+        _stopButton.onClick.AddListener(StopPlayer);
+    }
+
     private void FixedUpdate()
     {
+
+        // Check if the player is stopped or movement is not allowed
+        if (_isPlayerStopped || !_isMovementAllowed)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            return;
+        }
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -27,7 +61,17 @@ public class PlayerMovementJoystick : MonoBehaviour
 
         Vector3 movement = joystickMovement + wasdMovement;
 
-        if (movement.magnitude > 0.01f)
+        // Apply joystick movement smoothing
+        _smoothedJoystickMovement = Vector3.Lerp(_smoothedJoystickMovement, movement, _movementSmoothing);
+
+        // Check if joystick movement is below the threshold
+        if (_smoothedJoystickMovement.magnitude <= _movementThreshold)
+        {
+            // Stop the player from moving
+            _smoothedJoystickMovement = Vector3.zero;
+        }
+
+        if (_smoothedJoystickMovement.magnitude > 0.01f)
         {
             if (!_isCrouching && _rigidbody.velocity.magnitude > 0f && !GetComponent<AudioSource>().isPlaying)
             {
@@ -36,75 +80,128 @@ public class PlayerMovementJoystick : MonoBehaviour
 
                 Debug.Log("Playing movement sound");
             }
-            // Invert the movement vector if joystick or W key is moving downwards
+
             if (_joystick.Vertical < 0f || vertical < 0f)
             {
                 Crouch();
                 return;
             }
 
-            // If crouching, move slower
             float speed = (_isCrouching) ? _crouchSpeed : _moveSpeed;
 
-            // Transform the movement vector from local space to world space
-            Vector3 worldMovement = transform.TransformDirection(movement.normalized * speed);
+            // Apply speed boost if active
+            if (_isSpeedBoostActive)
+            {
+                speed *= _speedBoostMultiplier;
+            }
 
-            // Cast a ray in front of the player to check for obstacles
+            Vector3 worldMovement = transform.TransformDirection(_smoothedJoystickMovement.normalized * speed);
+
             RaycastHit hit;
             if (Physics.Raycast(transform.position, worldMovement, out hit, worldMovement.magnitude * Time.fixedDeltaTime))
             {
-                // Stop the player from moving forward if there is an obstacle
                 worldMovement = hit.distance * hit.normal / Time.fixedDeltaTime;
             }
 
-            // Apply the movement to the Rigidbody
-            _rigidbody.MovePosition(transform.position + worldMovement * Time.fixedDeltaTime);
+            // Apply movement with interpolation
+            Vector3 targetPosition = transform.position + worldMovement * Time.fixedDeltaTime;
+            _rigidbody.MovePosition(Vector3.Lerp(transform.position, targetPosition, _movementSmoothing));
 
-            // Rotate the character to face the movement direction
-            transform.rotation = Quaternion.LookRotation(worldMovement.normalized, Vector3.up);
+            // Apply rotation with interpolation
+            Quaternion targetRotation = Quaternion.LookRotation(worldMovement.normalized, Vector3.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, _movementSmoothing);
         }
         else
         {
-            // If not moving, stop crouching
             StopCrouch();
         }
     }
 
     private void Crouch()
     {
-        // Only crouch if not already crouching
         if (!_isCrouching)
         {
             _isCrouching = true;
             _crouchStartTime = Time.time;
 
-            // Reduce the height of the character's collider
             BoxCollider collider = GetComponent<BoxCollider>();
             collider.size = new Vector3(collider.size.x, collider.size.y / 2f, collider.size.z);
-
-            // Play crouch animation or do other crouch-related stuff
         }
     }
 
     private void StopCrouch()
     {
-        // Only uncrouch if currently crouching
         if (_isCrouching)
         {
-            // If crouch duration has elapsed, uncrouch
             if (Time.time - _crouchStartTime >= _crouchDuration)
             {
                 _isCrouching = false;
 
-                // Increase the height of the character's collider
                 BoxCollider collider = GetComponent<BoxCollider>();
                 collider.size = new Vector3(collider.size.x, collider.size.y * 2f, collider.size.z);
-
-                // Play uncrouch animation or do other uncrouch-related stuff
             }
         }
     }
+
+    private void ActivateSpeedBoost()
+    {
+        if (!_isSpeedBoostActive && Time.time >= _speedBoostCooldownEndTime)
+        {
+            _isSpeedBoostActive = true;
+            _speedBoostEndTime = Time.time + _speedBoostDuration;
+            _speedBoostCooldownEndTime = Time.time + _speedBoostCooldown;
+
+            // Perform any UI or gameplay logic for speed boost activation
+            Debug.Log("Speed boost activated!");
+
+            StartCoroutine(DeactivateSpeedBoost());
+        }
+    }
+
+    private IEnumerator DeactivateSpeedBoost()
+    {
+        yield return new WaitForSeconds(_speedBoostDuration);
+
+        _isSpeedBoostActive = false;
+
+        // Perform any UI or gameplay logic for speed boost deactivation
+        Debug.Log("Speed boost deactivated!");
+    }
+
+    private void StopPlayer()
+    {
+        if (!_isPlayerStopped)
+        {
+            // Store the current smoothed joystick movement as the original joystick movement
+            _originalJoystickMovement = _smoothedJoystickMovement;
+
+            // Stop the player's movement
+            _smoothedJoystickMovement = Vector3.zero;
+
+            _isPlayerStopped = true;
+
+            // Start a coroutine to automatically re-enable movement after a delay
+            StartCoroutine(EnableMovementAfterDelay(1f));
+        }
+    }
+
+    private IEnumerator EnableMovementAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Restore the original joystick movement
+        _smoothedJoystickMovement = _originalJoystickMovement;
+
+        // Reset the original joystick movement
+        _originalJoystickMovement = Vector3.zero;
+
+        _isPlayerStopped = false;
+    }
 }
+
+
+
+
 
 
 
