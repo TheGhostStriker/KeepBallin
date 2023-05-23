@@ -37,6 +37,8 @@ public class PlayerMovementJoystick : MonoBehaviour
     private bool _isPlayerStopped = false;
     private bool _isMovementAllowed = true;
 
+    
+
     private void Start()
     {
         _originalJoystickMovement = Vector3.zero;
@@ -197,6 +199,8 @@ public class PlayerMovementJoystick : MonoBehaviour
 
         _isPlayerStopped = false;
     }
+
+    
 }
 
 

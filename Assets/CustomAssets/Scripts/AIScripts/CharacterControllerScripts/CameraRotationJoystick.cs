@@ -26,7 +26,7 @@ public class CameraRotationJoystick : MonoBehaviour
 
         // Calculate the rotation angles based on the input values
         float rotationX = vertical * rotationSpeed;
-        float rotationY = -horizontal * rotationSpeed;
+        float rotationY = horizontal * rotationSpeed;
 
         // Accumulate the rotation angles
         currentRotationX += rotationX;

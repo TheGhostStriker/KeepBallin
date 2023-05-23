@@ -5,7 +5,7 @@ using UnityEngine;
 public class TriggerOnandOffLevels : MonoBehaviour
 {
     public GameObject prevLevel;
-    public GameObject newLevel;
+   
     public Animator doorAnim;
     public AudioSource congratsPlayer;
     
@@ -17,7 +17,7 @@ public class TriggerOnandOffLevels : MonoBehaviour
         {
             congratsPlayer.Play();
             prevLevel.SetActive(false);
-            newLevel.SetActive(true);
+            
             doorAnim.SetTrigger("CloseDoor");
 
             Destroy(this.gameObject);
