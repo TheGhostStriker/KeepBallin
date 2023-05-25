@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     public GameObject thirdLevel;
     public GameObject firstLevel;
     public GameObject fourthLevel;
+    public GameObject pauseButton;
+    public GameObject moveJoystick;
+    public GameObject cameraJoystick;
+    public GameObject dashButton;
+    public GameObject stopButton;
 
     private float startTime;
     private float survivalTime;
@@ -118,6 +123,12 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         Time.timeScale = 0f;
         gameOverCanvas.SetActive(true);
+        pauseButton.SetActive(false);
+        moveJoystick.SetActive(false);
+        cameraJoystick.SetActive(false);
+        stopButton.SetActive(false);
+        dashButton.SetActive(false);
+
     }
 
     public void Retry()
