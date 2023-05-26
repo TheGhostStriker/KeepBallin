@@ -7,15 +7,15 @@ public class OpenAndCloseDoor : MonoBehaviour
 
     public Animator doorAnim;
     public GameObject closeTrigger;
-    public AudioClip openSciDoor;
+    public AudioSource doorSlam;
+    public AudioClip doorSlamClip;
 
     public void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
             doorAnim.SetTrigger("OpenTheDoor");
-            GetComponent<AudioSource>().clip = openSciDoor;
-            GetComponent<AudioSource>().Play();
+            doorSlam.PlayOneShot(doorSlamClip);
             closeTrigger.SetActive(true);
             Destroy(this.gameObject);
         }

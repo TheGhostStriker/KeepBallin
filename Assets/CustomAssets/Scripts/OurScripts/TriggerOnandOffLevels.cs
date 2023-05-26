@@ -8,6 +8,7 @@ public class TriggerOnandOffLevels : MonoBehaviour
    
     public Animator doorAnim;
     public AudioSource congratsPlayer;
+    public AudioSource slamDoor;
     public AudioClip doorSlam;
     
 
@@ -20,8 +21,7 @@ public class TriggerOnandOffLevels : MonoBehaviour
             prevLevel.SetActive(false);
             
             doorAnim.SetTrigger("CloseDoor");
-            GetComponent<AudioSource>().clip = doorSlam;
-            GetComponent<AudioSource>().Play();
+            slamDoor.PlayOneShot(doorSlam);
 
             Destroy(this.gameObject);
         }

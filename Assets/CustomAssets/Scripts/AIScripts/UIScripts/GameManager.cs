@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public AudioClip ohLooky;
 
     public AudioClip sciFiDoor;
+    public AudioClip doorOpen;
 
 
     void Start()
@@ -107,6 +108,8 @@ public class GameManager : MonoBehaviour
         if(survivalTime >= 260f)
         {
             theatreDoorAnim.SetTrigger("FinalOpen");
+            GetComponent<AudioSource>().clip = doorOpen;
+            GetComponent<AudioSource>().Play();
         }
 
         //DEV CONTROLS - ALSO INCLUDES F AND G TO OPEN AND CLOSE FIRST LEVEL DOOR. P OPENS SECOND LEVEL DOORS

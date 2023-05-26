@@ -5,6 +5,7 @@ using UnityEngine;
 public class CloseDoor : MonoBehaviour
 {
     public Animator doorAnim;
+    public AudioSource sciDoor;
     public AudioClip sciDoorClose;
     // Start is called before the first frame update
     public void OnTriggerEnter(Collider other)
@@ -12,8 +13,7 @@ public class CloseDoor : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             doorAnim.SetTrigger("CloseTheDoor");
-            GetComponent<AudioSource>().clip = sciDoorClose;
-            GetComponent<AudioSource>().Play();
+            sciDoor.PlayOneShot(sciDoorClose);
             Destroy(this.gameObject);
         }
     }
