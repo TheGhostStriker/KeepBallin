@@ -17,6 +17,7 @@ public class PlayerMovementJoystick : MonoBehaviour
     private bool _isCrouching = false;
     private float _crouchStartTime = 0.0f;
     public AudioClip movementSound;
+    
 
     [SerializeField] private float _movementSmoothing = 0.1f;
     private Vector3 _originalJoystickMovement;
@@ -95,6 +96,7 @@ public class PlayerMovementJoystick : MonoBehaviour
             if (_isSpeedBoostActive)
             {
                 speed *= _speedBoostMultiplier;
+                
             }
 
             Vector3 worldMovement = transform.TransformDirection(_smoothedJoystickMovement.normalized * speed);

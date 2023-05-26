@@ -12,6 +12,9 @@ namespace SojaExiles
 		public bool open;
 		public Transform Player;
 
+		public AudioClip openingDoor;
+		public AudioClip closingDoor;
+
 		void Start()
 		{
 			open = false;
@@ -68,6 +71,8 @@ namespace SojaExiles
 		{
 			print("you are opening the door");
 			openandclose.Play("Opening");
+			GetComponent<AudioSource>().clip = openingDoor;
+			GetComponent<AudioSource>().Play();
 			open = true;
 			yield return new WaitForSeconds(.5f);
 		}
@@ -76,6 +81,8 @@ namespace SojaExiles
 		{
 			print("you are closing the door");
 			openandclose.Play("Closing");
+			GetComponent<AudioSource>().clip = closingDoor;
+			GetComponent<AudioSource>().Play();
 			open = false;
 			yield return new WaitForSeconds(.5f);
 		}

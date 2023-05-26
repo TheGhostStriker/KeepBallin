@@ -17,6 +17,7 @@ public class PopcornBall : MonoBehaviour
     private int numBounces = 0; // The number of times the ball has bounced
     private int numSplitsLeft = 2; // The number of times the ball can still split
     private int numSplitsMade = 0;
+    public AudioClip popcornChew;
 
     private void Start()
     {
@@ -45,6 +46,8 @@ public class PopcornBall : MonoBehaviour
             // Add a small force to push the ball down
             rb.AddForce(Vector3.down * 10f, ForceMode.Impulse);
         }
+        GetComponent<AudioSource>().clip = popcornChew;
+        GetComponent<AudioSource>().Play();
     }
 
     private void Bounce(Vector3 collisionNormal)

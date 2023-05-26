@@ -14,6 +14,7 @@ public class NormalBall : MonoBehaviour
 
     private Rigidbody rb;
     private bool isMaxSpeedReached = false;
+    public AudioClip bounceClip;
 
 
     
@@ -62,6 +63,9 @@ public class NormalBall : MonoBehaviour
 
         // Set the ball's velocity to the reflected velocity
         rb.velocity = reflection;
+
+        GetComponent<AudioSource>().clip = bounceClip;
+        GetComponent<AudioSource>().Play();
 
         // Increase the ball's speed by a small amount
         speed += speedIncrement;

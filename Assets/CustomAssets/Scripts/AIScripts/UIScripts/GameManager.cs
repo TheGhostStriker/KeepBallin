@@ -33,9 +33,12 @@ public class GameManager : MonoBehaviour
 
     public Animator doorAnim;
     public Animator sciDoorAnim;
+    public Animator theatreDoorAnim;
 
     public AudioSource ohLook;
     public AudioClip ohLooky;
+
+    public AudioClip sciFiDoor;
 
 
     void Start()
@@ -73,7 +76,7 @@ public class GameManager : MonoBehaviour
                 ohLook.PlayOneShot(ohLooky);
                 Destroy(ohLook, 6f);
             }
-            //Animator animator = GetComponent<Animator>();
+            
             doorAnim.SetTrigger("OpenDoor");
 
         }
@@ -89,22 +92,25 @@ public class GameManager : MonoBehaviour
         if(survivalTime >= 200f)
         {
             sciDoorAnim.SetTrigger("OpenSciDoor");
+            GetComponent<AudioSource>().clip = sciFiDoor;
+            GetComponent<AudioSource>().Play();
             doorBlocker1.SetActive(false);
         }
-        //TODO: Add FINAL Stage TRIGGER HERE
+        
 
         if(survivalTime >= 255f)
         {
             fourthLevel.SetActive(true);
+            
         }
 
         if(survivalTime >= 260f)
         {
-            //ThirdDoorAnimHereOniChaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaan
+            theatreDoorAnim.SetTrigger("FinalOpen");
         }
 
         //DEV CONTROLS - ALSO INCLUDES F AND G TO OPEN AND CLOSE FIRST LEVEL DOOR. P OPENS SECOND LEVEL DOORS
-        //TODO: ADD THIRD DOOR CHEATCODE UWU
+      
         if(Input.GetKeyDown(KeyCode.P))
         {
             sciDoorAnim.SetTrigger("OpenSciDoor");
@@ -113,7 +119,7 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.L))
         {
-            //ThirdDoorAnimHereSenpai.
+            theatreDoorAnim.SetTrigger("FinalOpen");
         }
         
     }

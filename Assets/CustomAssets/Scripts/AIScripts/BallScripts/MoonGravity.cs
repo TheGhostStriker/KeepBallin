@@ -15,6 +15,8 @@ public class MoonGravity : MonoBehaviour
     private Rigidbody rb;
     private int numBalls = 0; // The number of balls that have been spawned from the duplicate
 
+    public AudioClip moonClip;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,6 +42,8 @@ public class MoonGravity : MonoBehaviour
             float angle = Random.Range(10f, 30f); // Random angle of deflection in degrees
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.Cross(Vector3.up, randomDirection));
             Vector3 direction = rotation * randomDirection;
+            GetComponent<AudioSource>().clip = moonClip;
+            GetComponent<AudioSource>().Play();
 
             bounceForce = Mathf.Clamp(bounceForce + speedIncrement, 0f, maxBounceForce);
             float currentSpeed = rb.velocity.magnitude;
