@@ -7,6 +7,7 @@ public class WaypointMovement : MonoBehaviour
     public float waypointRadius = 0.5f;  // Radius around waypoints to consider as reached
 
     private int currentWaypointIndex = 0;
+    private bool isReversed = false;
 
     private void Update()
     {
@@ -26,17 +27,30 @@ public class WaypointMovement : MonoBehaviour
         // Check if the object has reached the current waypoint
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position) <= waypointRadius)
         {
-            // Move to the next waypoint
-            currentWaypointIndex++;
-
-            // Check if all waypoints have been visited
-            if (currentWaypointIndex >= waypoints.Length)
+            // Check if it reached the final waypoint
+            if (currentWaypointIndex == waypoints.Length - 1)
             {
-                currentWaypointIndex = 0;  // Reset to the first waypoint
+                isReversed = true;  // Set reverse flag to true
+            }
+            // Check if it reached the first waypoint in reverse mode
+            else if (currentWaypointIndex == 0 && isReversed)
+            {
+                isReversed = false;  // Reset reverse flag to false
+            }
+
+            // Move to the next or previous waypoint based on reverse flag
+            if (isReversed)
+            {
+                currentWaypointIndex--;
+            }
+            else
+            {
+                currentWaypointIndex++;
             }
         }
     }
 }
+
 
 
 

@@ -6,15 +6,15 @@ public class TriggerFinalStage : MonoBehaviour
 {
     public GameObject finalBoss;
 
-    public AudioSource dunDunDun;
-    public AudioClip bossBattle;
+    
+    public GameObject bossBattle;
 
     public void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
             finalBoss.SetActive(true);
-            dunDunDun.PlayOneShot(bossBattle);
+            bossBattle.SetActive(true);
             Destroy(this.gameObject);
         }
     }
