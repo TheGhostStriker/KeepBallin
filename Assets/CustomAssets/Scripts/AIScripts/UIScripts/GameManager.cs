@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
             
         }
 
-        if (survivalTime >= 40f && ohLook != null)
+        if (survivalTime >= 25f && ohLook != null)
         {
             
             if(!ohLook.isPlaying)
@@ -102,13 +102,13 @@ public class GameManager : MonoBehaviour
             doorAnim.SetTrigger("OpenDoor");
 
         }
-        if(survivalTime >= 40f)
+        if(survivalTime >=25f)
         {
             
             secondLevel.SetActive(true);
         }
 
-        if(survivalTime >= 50f && selfDestruct != null)
+        if(survivalTime >= 35f && selfDestruct != null)
         {
             if(!selfDestruct.isPlaying)
             {
@@ -118,14 +118,14 @@ public class GameManager : MonoBehaviour
             
         }
 
-        if(survivalTime >= 65f)
+        if(survivalTime >= 50f)
         {
             firstLevel.SetActive(false);
             loungeAmbience.SetActive(false);
             labAmbience.SetActive(true);
         }
 
-        if(survivalTime >= 120f && annoyingMe != null) // 120
+        if(survivalTime >= 70f && annoyingMe != null) // 120
         {
             if(!annoyingMe.isPlaying)
             {
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
             
         }
 
-        if (survivalTime >= 150f && cheatingYouMust != null) //150
+        if (survivalTime >= 95f && cheatingYouMust != null) //150
         {
             if(!cheatingYouMust.isPlaying)
             {
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
             
         }
 
-        if (survivalTime >= 180f && cantFindCheats != null)
+        if (survivalTime >= 105f && cantFindCheats != null)
         {
             if(!cantFindCheats.isPlaying)
             {
@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
         }
 
        
-        if (survivalTime >= 200f && selfDestruct2 != null)
+        if (survivalTime >= 120f && selfDestruct2 != null)
         {
             if(!selfDestruct2.isPlaying)
             {
@@ -169,16 +169,19 @@ public class GameManager : MonoBehaviour
             GetComponent<AudioSource>().Play();
             doorBlocker1.SetActive(false);
         }
-        if(survivalTime >= 215f)
+
+        
+        if(survivalTime >= 135f)
         {
             secondLevel.SetActive(false);
             labAmbience.SetActive(false);
             theatreAmbience.SetActive(true);
+            sciDoorAnim.SetTrigger("CloseSciDoor");
         }
 
         
 
-        if (survivalTime >= 240f && popcornNotEnough != null) //240
+        if (survivalTime >= 170f && popcornNotEnough != null) //240
         {
             if(!popcornNotEnough.isPlaying)
             {
@@ -189,7 +192,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if (survivalTime >= 265f && finalStageFine != null) // 265
+        if (survivalTime >= 195f && finalStageFine != null) // 265
         {
             if(!finalStageFine.isPlaying)
             {
@@ -198,32 +201,33 @@ public class GameManager : MonoBehaviour
                 Destroy(finalStageFine, 10f);
             }
             fourthLevel.SetActive(true);
-            theatreAmbience.SetActive(false);
+            
 
         }
 
-        if(survivalTime >= 275f && selfDestruct3 != null)
+        if(survivalTime >= 210f && selfDestruct3 != null)
         {
             if (!selfDestruct3.isPlaying)
             {
                 selfDestruct3.PlayOneShot(selfDestructClip3);
                 Destroy(selfDestruct3, 5f);
             }
-            
+            theatreAmbience.SetActive(false);
             theatreDoorAnim.SetTrigger("FinalOpen");
             GetComponent<AudioSource>().clip = doorOpen;
             GetComponent<AudioSource>().Play();
         }
-        if(survivalTime >= 290f)
+        if(survivalTime >= 225f)
         {
             thirdLevel.SetActive(false);
         }
 
-        if(survivalTime >= 400f && cantBelieveThis != null)
+        if(survivalTime >= 350f && cantBelieveThis != null)
         {
             if(!cantBelieveThis.isPlaying)
             {
                 cantBelieveThis.PlayOneShot(cantBelieveThisClip);
+                Destroy(cantBelieveThis, 7f);
             }
             
             Invoke("YouWinScreen", 7f);
@@ -240,6 +244,10 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.L))
         {
             theatreDoorAnim.SetTrigger("FinalOpen");
+        }
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            sciDoorAnim.SetTrigger("CloseSciDoor");
         }
         
     }
