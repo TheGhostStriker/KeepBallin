@@ -52,40 +52,34 @@ public class NormalBall : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        
-
-        // Reflect the ball's velocity when it collides with a surface
-        Vector3 reflection = Vector3.Reflect(rb.velocity, other.contacts[0].normal);
-
-        // Add a slight curvature to the reflection
-        Vector3 curve = Vector3.Cross(Vector3.up, reflection).normalized * 0.1f;
-        reflection += curve;
-
-        // Set the ball's velocity to the reflected velocity
-        rb.velocity = reflection;
-
-        GetComponent<AudioSource>().clip = bounceClip;
-        GetComponent<AudioSource>().Play();
-
-        // Increase the ball's speed by a small amount
-        speed += speedIncrement;
-
-        // Cap the ball's speed at a maximum value
-        speed = Mathf.Min(speed, maxSpeed);
-
-        // Set the flag to indicate that the maximum speed has been reached
-        if (speed == maxSpeed)
+        if (other.gameObject.CompareTag("Ground"))
         {
-            isMaxSpeedReached = true;
+            // Calculate the bounce direction based on the collision normal
+            Vector3 bounceDirection = Vector3.Reflect(rb.velocity.normalized, other.contacts[0].normal).normalized;
+
+            // Apply the bounce velocity to the ball
+            rb.velocity = bounceDirection * speed;
+
+            // Increase the ball's speed by a small amount
+            speed += speedIncrement;
+
+            // Cap the ball's speed at a maximum value
+            speed = Mathf.Min(speed, maxSpeed);
+
+            // Set the flag to indicate that the maximum speed has been reached
+            if (speed == maxSpeed)
+            {
+                isMaxSpeedReached = true;
+            }
+
+            GetComponent<AudioSource>().clip = bounceClip;
+            GetComponent<AudioSource>().Play();
+
+            Debug.Log("DoingAllTheBallThings");
         }
-
-        // Bounce the ball in the direction opposite to the collision
-        Vector3 bounceDirection = -other.contacts[0].normal;
-        rb.AddForce(bounceDirection * speed * 2f, ForceMode.Impulse);
-
-        // Apply the new speed to the ball's velocity
-        rb.velocity = rb.velocity.normalized * speed;
     }
+
+
 
 
 

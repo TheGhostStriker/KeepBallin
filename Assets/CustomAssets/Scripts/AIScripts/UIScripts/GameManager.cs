@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     public AudioClip ohLooky;
 
     public AudioClip sciFiDoor;
+    public AudioClip sciFiDoor2;
     public AudioClip doorOpen;
     public AudioSource selfDestruct;
     public AudioSource selfDestruct2;
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
     public AudioSource annoyingMe;
     public AudioSource finalStageFine;
     public AudioSource cantBelieveThis;
+    public AudioSource sciFiDoorOpen2;
     public AudioClip selfDestructClip;
     public AudioClip selfDestructClip2;
     public AudioClip selfDestructClip3;
@@ -156,7 +158,7 @@ public class GameManager : MonoBehaviour
         }
 
        
-        if (survivalTime >= 120f && selfDestruct2 != null)
+        if (survivalTime >= 120f && selfDestruct2 != null) //120
         {
             if(!selfDestruct2.isPlaying)
             {
@@ -164,9 +166,17 @@ public class GameManager : MonoBehaviour
                 Destroy(selfDestruct2, 5f);
             }
 
+            
+            if(!sciFiDoorOpen2.isPlaying)
+            {
+                sciFiDoorOpen2.PlayOneShot(sciFiDoor2);
+                Destroy(sciFiDoor2, 1f);
+            }
+             
+            
+
             sciDoorAnim.SetTrigger("OpenSciDoor");
-            GetComponent<AudioSource>().clip = sciFiDoor;
-            GetComponent<AudioSource>().Play();
+            
             doorBlocker1.SetActive(false);
         }
 

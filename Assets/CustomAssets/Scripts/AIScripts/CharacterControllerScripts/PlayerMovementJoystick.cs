@@ -81,7 +81,7 @@ public class PlayerMovementJoystick : MonoBehaviour
                 GetComponent<AudioSource>().clip = movementSound;
                 GetComponent<AudioSource>().Play();
 
-                Debug.Log("Playing movement sound");
+                
             }
 
             if (_joystick.Vertical < 0f || vertical < 0f)
