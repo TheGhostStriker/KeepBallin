@@ -288,7 +288,7 @@ public class GameManager : MonoBehaviour
 
     public void Quit()
     {
-        SceneManager.LoadScene("HomeScreen");
+        SceneManager.LoadScene("MainMenu");
     }
 }
 

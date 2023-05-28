@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/CustomAssets/Scenes/BallinStageOne.unity
     guid: 4a4cdfebd5a3a0e4f8db6bddf09bdabf
-  - enabled: 1
+  - enabled: 0
     path: Assets/CustomAssets/Scenes/Options.unity
     guid: 0f58576d488023c40bf256cc74a80d86
   m_configObjects: {}
